@@ -2,11 +2,11 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
-import {  useForm } from 'react-hook-form'
+import {  useForm,FieldPath, Control } from 'react-hook-form'
 import { z } from 'zod'
-import { Form } from './ui/form'
 import { Button } from './ui/button'
-import {InputFormField} from "./InputFormField"
+import { Input } from './ui/input'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
 
 export const formSchema = z.object({
     email: z.string().email(),
@@ -24,9 +24,29 @@ export default function SignUpForm() {
             confirmPassword: ""
         },
     })
-
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+   
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        
+        const host = process.env.NEXT_PUBLIC_HOST;
+        try{
+            const response = await fetch(`${host}/auth/signup`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(values)
+            })
+            const data = await response.json();
+            if(response.status == 200){
+                sessionStorage.setItem('user',data.user);
+                sessionStorage.setItem('auth-token',data.authToken);
+            }else{
+                alert(data.error);
+            }
+        }
+        catch(err){
+            alert(err);
+        }
     }
     return (
         <Form {...form}>
@@ -65,5 +85,35 @@ export default function SignUpForm() {
                 <Button type='submit'>SignUp</Button>
             </form>
         </Form>
+    )
+}
+
+interface InputFormFieldProps {
+    name: FieldPath<z.infer<typeof formSchema>>;
+    label: string,
+    placeholder: string,
+    description?: string,
+    inputType?: string,
+    formControl: Control<z.infer<typeof formSchema>, any>
+}
+const InputFormField: React.FC<InputFormFieldProps> = ({
+    name, label, placeholder, description, inputType, formControl
+}) => {
+    return (
+        <FormField
+            control={formControl}
+            name={name}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel>
+                        {label}
+                    </FormLabel>
+                    <FormControl>
+                        <Input  type={inputType || 'text'} {...field} />
+                    </FormControl>
+                    {description && <FormDescription>{description}</FormDescription>}
+                    <FormMessage />
+                </FormItem>
+            )} />
     )
 }

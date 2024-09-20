@@ -1,13 +1,28 @@
 'use client'
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 
 import { useTasks } from '@/contexts/taskContext';
 export default function EditTask({ params }: { params: { userId: string } }) {
+    interface Task {
+        title: string;
+        description: string;
+        status: string;
+        priority: string;
+        dueDate: Date;
+      }
+    const [toDoTasks, setToDoTasks] = useState<Task[] |[]>([])
+   const { fetchAllTasks,allTasks } = useTasks();
+
+   useEffect(() => {
+    if(sessionStorage.getItem('auth-token')){
+        fetchAllTasks();
+    }
     
-   
+   },[])
+  
     const data = [
         {
             catId: 1,

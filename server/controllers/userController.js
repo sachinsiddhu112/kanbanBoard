@@ -7,9 +7,11 @@ import User from "../models/userModel.js";
 
 
 export const login =async (req,res) => {
+    
+
     const {username, password} = req.body;
      try{
-        if(!username | !password){
+        if(!username || !password){
             res.status(400).json({error:"Please provide username and password."});
             return;
         }

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useState, ReactNode, useContext } from "react";
+import React, { createContext, useState, ReactNode, useContext, useEffect } from "react";
 
 // Interface for a single Task
 interface Task {
@@ -20,14 +20,24 @@ interface updateTaskPropsType {
 // Interface for the context
 interface TasksContextType {
   allTasks: Task[];  // Array of tasks
-  fetchAllTasks: () => void;
+  fetchAllTasks: () => Promise<Task[]>;
   updateTask: (id:String, { title, description, status, priority, dueDate }: updateTaskPropsType) => Promise<boolean>;
   deleteTask: () => void;
 }
 
 // Create the context with a default of undefined
 const TasksContext = createContext<TasksContextType | undefined>(undefined);
-export const useTasks = () => useContext(TasksContext)
+
+export const useTasks = () =>{ 
+  const context = useContext(TasksContext);
+
+  if (context === undefined) {
+    throw new Error("useTasksContext must be used within a TasksContextProvider");
+  }
+
+  return context;
+}
+
 interface TasksContextProviderProps {
   children: ReactNode;  // Type for children prop
 }
@@ -37,6 +47,8 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
   const [allTasks, setAllTasks] = useState<Task[]>([]);  // Typing for tasks array
   const host = "http://localhost:8001/tasks";
 
+
+ 
   // Fetch all tasks from the server
   const fetchAllTasks = async () => {
     const response = await fetch(`${host}/getAllTasks`, {
@@ -48,9 +60,11 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
     });
 
     const json = await response.json();
-    setAllTasks(json);  // Assuming response is an array of tasks
+    setAllTasks(json); 
+    return json; // Assuming response is an array of tasks
   };
 
+  console.log('taskcontext',allTasks)
   // Placeholder for updateTask
 
   const updateTask = async (id: String, { title, description, status, priority, dueDate }: updateTaskPropsType) => {

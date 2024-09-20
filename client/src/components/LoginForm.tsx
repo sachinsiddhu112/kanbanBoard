@@ -2,17 +2,19 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
-import {  useForm } from 'react-hook-form'
+import {  useForm,FieldPath,Control } from 'react-hook-form'
 import { z } from 'zod'
-import { Form } from './ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
 import { Button } from './ui/button'
-import {InputFormField} from "./InputFormField"
+import { Input } from './ui/input'
 
 
-export const formSchema = z.object({
+
+ const formSchema = z.object({
     username: z.string().max(20),
     password: z.string().min(5),
 })
+
 export default function LoginForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -22,8 +24,27 @@ export default function LoginForm() {
         },
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const host = process.env.NEXT_PUBLIC_HOST;
+        try{
+            const response = await fetch(`http://localhost:8001/auth/login`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(values)
+            })
+            const data = await response.json();
+            if(response.status == 200){
+                sessionStorage.setItem('auth-token',data.authToken);
+                sessionStorage.setItem('user',data.user);
+            }else{
+                alert(data.error)
+            }
+        }
+        catch(err){
+            alert(err);
+        }
     }
     return (
         <Form {...form}>
@@ -46,5 +67,35 @@ export default function LoginForm() {
                 <Button type='submit'>Login</Button>
             </form>
         </Form>
+    )
+}
+
+interface InputFormFieldProps {
+    name: FieldPath<z.infer<typeof formSchema>>;
+    label: string,
+    placeholder: string,
+    description?: string,
+    inputType?: string,
+    formControl: Control<z.infer<typeof formSchema>, any>
+}
+const InputFormField: React.FC<InputFormFieldProps> = ({
+    name, label, placeholder, description, inputType, formControl
+}) => {
+    return (
+        <FormField
+            control={formControl}
+            name={name}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel>
+                        {label}
+                    </FormLabel>
+                    <FormControl>
+                        <Input  type={inputType || 'text'} {...field} />
+                    </FormControl>
+                    {description && <FormDescription>{description}</FormDescription>}
+                    <FormMessage />
+                </FormItem>
+            )} />
     )
 }

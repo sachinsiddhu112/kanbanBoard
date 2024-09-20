@@ -13,7 +13,7 @@ dotenv.config();
 app.use(bodyParser.json());
 app.use(cors({
     origin:"*",
-    allowedHeaders:['Content-Type','authToken']
+    allowedHeaders:['Content-Type','auth-token']
 }))
 
 app.use('/tasks',taskRoutes);

@@ -18,6 +18,11 @@ const taskSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         },
+        priority:{
+            type:String,
+            default:"Low",
+            
+        },
         status:{
             type:String,
             default:"To Do"

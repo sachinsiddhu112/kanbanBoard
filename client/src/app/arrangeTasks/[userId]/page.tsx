@@ -4,9 +4,12 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 import React from 'react'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 
+import { useTasks } from '@/contexts/taskContext';
 export default function EditTask({ params }: { params: { userId: string } }) {
     const { userId } = params;
-
+    const {allTasks,fetchAllTasks}  = useTasks();
+    fetchAllTasks();
+    console.log(allTasks);
     const data = [
         {
             catId: 1,

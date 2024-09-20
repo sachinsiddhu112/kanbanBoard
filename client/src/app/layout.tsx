@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { TasksContextProvider } from "@/contexts/taskContext";
 
 
 export const metadata: Metadata = {
@@ -17,7 +18,9 @@ export default function RootLayout({
       <body
         className={`antialiased`}
       >
+        <TasksContextProvider>
         {children}
+        </TasksContextProvider>
       </body>
     </html>
   );

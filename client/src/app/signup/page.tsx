@@ -9,8 +9,8 @@ export default function SignUp() {
         <div className="mb-8 flex flex-col gap-5">
             <h1 className="text-3xl font-semibold">Sign Up</h1>
             <SignUpForm/>
-            <p className="text-sm text-neutral-500">Alread have an account?
-                 <Link href='/login' className="underline underline-offset-4">Login</Link></p>
+            <div className="text-sm text-neutral-500">Alread have an account?
+                 <Link href='/login' className="underline underline-offset-4">Login</Link></div>
         </div>
     </section>
    </main>

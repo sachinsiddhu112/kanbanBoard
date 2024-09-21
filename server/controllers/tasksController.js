@@ -33,7 +33,7 @@ export const getUserTaskWithId = async (req, res) => {
 }
 
 export const createTask = async (req, res) => {
-    const { title, description, dueDate, status,priority } = req.body;
+    const { title, description, date, status,priority } = req.body;
     if (!title || !description) {
         res.status(400).json({ error: "Title and Description required to create new task." });
         return;
@@ -43,7 +43,7 @@ export const createTask = async (req, res) => {
             user: req.user.id,
             title,
             description,
-            dueDate,
+            dueDate:date,
             status,
             priority
         })
@@ -59,9 +59,10 @@ export const createTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
     const { id } = req.params
-
+    console.log(id)
     try {
         const task = await Tasks.findById(id);
+        console.log(task)
         if (!task) {
             res.status(404).json({ error: "Task is not found." });
             return;
@@ -71,13 +72,14 @@ export const updateTask = async (req, res) => {
             return;
         }
         const newTask = {
-            title: req.body.titile || task.title,
+            title: req.body.title || task.title,
             description: req.body.description || task.description,
             dueDate: req.body.date || task.dueDate,
             status: req.body.status || task.status,
             priority:req.body.priority || task.priority
         }
         const savedTask = await Tasks.findByIdAndUpdate(id, { $set: newTask }, { new: true });
+        
         res.status(200).json(savedTask);
 
     }

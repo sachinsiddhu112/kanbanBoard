@@ -14,37 +14,37 @@ import {
 } from "@/components/ui/popover"
 
 
-
 interface DatePickerProps {
-    date: Matcher| null;
-    setDate: (date: Date | null) => void; // Passing setDate as a prop
-  }
-  
-export const  DatePickerDemo: React.FC<DatePickerProps> = ({ date, setDate }) => {
-  
+  selectedDate: Date | null; // Ensuring this is Date | null
+  setDate: (date: Date | null) => void; // Passing setDate as a prop
+}
 
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant={"outline"}
-          className={cn(
-            "w-[280px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          initialFocus
-        />
-      </PopoverContent>
-    </Popover>
-  )
+export const  DatePicker:React.FC<DatePickerProps>=({selectedDate,setDate}) => {
+  //const [date, setDate] = React.useState<Date>()
+return (
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button
+        variant={"outline"}
+        className={cn(
+          "w-[280px] justify-start text-left font-normal",
+          !selectedDate && "text-muted-foreground"
+        )}
+      >
+        <CalendarIcon className="mr-2 h-4 w-4" />
+        {selectedDate? format(selectedDate, "PPP") : <span>Pick a date</span>}
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-auto p-0">
+      <Calendar
+        mode="single"
+        selected={selectedDate ?? undefined} // Pass date directly, or undefined if null
+        onSelect={(newDate) => {
+          setDate(newDate || null); // Set newDate or null
+        }}
+        initialFocus
+      />
+    </PopoverContent>
+  </Popover>
+)
 }

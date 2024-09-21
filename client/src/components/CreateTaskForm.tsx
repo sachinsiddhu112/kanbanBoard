@@ -21,20 +21,17 @@ import { useRouter } from 'next/navigation';
 import { DatePicker } from './DatePicker'
 import { useTasks } from '@/contexts/taskContext'
 export const formSchema = z.object({
-    title: z.string(),
-    description: z.string(),
-    status: z.string(),
+    title: z.string().max(60),
+    description: z.string().min(10).max(100),
+    status: z.string().min(1),
     priority: z.string(),
 
 })
-interface EditTaskFormProps {
-    taskId: string;
-  }
 
-export default function EditTaskForm({taskId}:EditTaskFormProps) {
+export default function CreateTaskForm() {
     const router = useRouter();
     const [date, setDate] = React.useState<Date | null>(null)
-    const {updateTask} = useTasks();
+    const { createTask } = useTasks();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -48,11 +45,10 @@ export default function EditTaskForm({taskId}:EditTaskFormProps) {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const data = { ...values, date };
-        try{   
-        const response = await updateTask(taskId,data);
-        
-    }
-        catch(err){
+        try {
+            const response = await createTask(data);
+        }
+        catch (err) {
             alert(err);
         }
     }
@@ -70,18 +66,16 @@ export default function EditTaskForm({taskId}:EditTaskFormProps) {
                 <InputFormField
                     name='description'
                     label="Description"
-                    description='Min 10 and max 100 characters.'
                     placeholder='Task Description'
                     inputType='text'
+                    description='Min 10 and max 100 characters.'
                     formControl={form.control}
                 />
-
                 <Controller
                     name="status"
                     control={form.control}
                     render={({ field }) => (
                         <FormItem>
-
                             <FormControl>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <SelectTrigger>
@@ -121,9 +115,9 @@ export default function EditTaskForm({taskId}:EditTaskFormProps) {
                     )}
                 />
                 <DatePicker selectedDate={date} setDate={setDate} />
-
+                <div className='w-[250px] h-11 '>
                 <Button type='submit'>Save</Button>
-
+                </div>
             </form>
         </Form>
     )

@@ -11,8 +11,8 @@ export default function Login() {
         <div className="mb-8 flex flex-col gap-5">
             <h1 className="text-3xl font-semibold">Login</h1>
             <LoginForm/>
-            <p className="text-sm text-neutral-500">Don't have any account?
-                 <Link href='/signup' className="underline underline-offset-4">Sign Up</Link></p>
+            <div className="text-sm text-neutral-500">Don't have any account?
+                 <Link href='/signup' className="underline underline-offset-4">Sign Up</Link></div>
         </div>
     </section>
    </main>

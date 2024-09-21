@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
-
+import { useRouter } from 'next/navigation';
 export const formSchema = z.object({
     email: z.string().email(),
     username: z.string().max(20),
@@ -15,6 +15,7 @@ export const formSchema = z.object({
     confirmPassword: z.string().min(5)
 })
 export default function SignUpForm() {
+    const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -40,6 +41,7 @@ export default function SignUpForm() {
             if(response.status == 200){
                 sessionStorage.setItem('user',data.user);
                 sessionStorage.setItem('auth-token',data.authToken);
+                router.push('/');
             }else{
                 alert(data.error);
             }

@@ -49,7 +49,7 @@ interface TasksContextProviderProps {
 
 // The context provider component
 export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ children }) => {
-  const [allTasks, setAllTasks] = useState<Task[]>([]);  // Typing for tasks array
+  const [allTasks, setAllTasks] = useState<Task[]>([] );  // Typing for tasks array
   const host = "http://localhost:8001/tasks";
   const router = useRouter();
   
@@ -65,6 +65,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
       });
       const json = await response.json();
       setAllTasks(json);
+      sessionStorage.setItem('allTasks',json);
       return json;
     }
     catch (err) {

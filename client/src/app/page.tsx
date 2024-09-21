@@ -23,7 +23,7 @@ export default function Home() {
   const [noOfToDoTasks, setNoOfToDoTasks] = useState(0);
   const [noOfInProgTasks, setNoOfInProgTasks] = useState(0);
   const [noOfDoneTasks, setNoOfDoneTasks] = useState(0);
-  const { fetchAllTasks, deleteTask, allTasks } = useTasks();
+  const {  deleteTask, allTasks } = useTasks();
   const [isEditingTask, setIsEditingTask] = useState<boolean>(false);
   const router = useRouter();
   const taskId = useRef<string>("");
@@ -63,6 +63,7 @@ export default function Home() {
     });
     return formattedDate;
   }
+  
   return (
     <div className='w-full h-screen'>
 
@@ -131,10 +132,10 @@ export default function Home() {
 
       </div>
         :
-        <div className='w-[800px] h-fit flex flex-col justify-center items-center p-5 m-auto'>
-          <h2 >Edit Task</h2>
-          <div className='w-full p-5'>
-            <EditTaskForm taskId={taskId.current} />
+        <div className='sm:w-[350px] md:w-[800px] h-screen flex flex-col justify-center items-center p-5 m-auto'>
+          <h2 className='sm:text-[25px] md:text-[35px] lg:text-[30px]'>Edit Task</h2>
+          <div className='sm:w-[350px] md:w-[700px] lg:w-full p-5'>
+            <EditTaskForm taskId={taskId.current} setIsEditingTask={setIsEditingTask}/>
           </div>
         </div>
 

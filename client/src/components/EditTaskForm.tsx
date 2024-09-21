@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import React ,{ Dispatch, SetStateAction} from 'react'
 import { useForm, FieldPath, Control, Controller } from 'react-hook-form'
 
 import { Button } from "@/components/ui/button"
@@ -29,9 +29,10 @@ export const formSchema = z.object({
 })
 interface EditTaskFormProps {
     taskId: string;
+    setIsEditingTask: Dispatch<SetStateAction<boolean>>;
   }
 
-export default function EditTaskForm({taskId}:EditTaskFormProps) {
+export default function EditTaskForm({taskId ,setIsEditingTask}:EditTaskFormProps) {
     const router = useRouter();
     const [date, setDate] = React.useState<Date | null>(null)
     const {updateTask} = useTasks();
@@ -50,7 +51,7 @@ export default function EditTaskForm({taskId}:EditTaskFormProps) {
         const data = { ...values, date };
         try{   
         const response = await updateTask(taskId,data);
-        
+        setIsEditingTask(false);
     }
         catch(err){
             alert(err);
@@ -122,7 +123,9 @@ export default function EditTaskForm({taskId}:EditTaskFormProps) {
                 />
                 <DatePicker selectedDate={date} setDate={setDate} />
 
+                <div className='w-[250px] h-11 '>
                 <Button type='submit'>Save</Button>
+                </div>
 
             </form>
         </Form>

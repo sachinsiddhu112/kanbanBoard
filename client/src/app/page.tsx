@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from "@/components/ui/badge"
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import EditTaskForm from '@/components/EditTaskForm';
 import { useRouter } from 'next/navigation';
 
@@ -19,7 +19,7 @@ export default function Home() {
     _id: string;
     dueDate: Date;
   }
-  const [tasks, setTasks] = useState<Task[] | null>();
+  
   const [noOfToDoTasks, setNoOfToDoTasks] = useState(0);
   const [noOfInProgTasks, setNoOfInProgTasks] = useState(0);
   const [noOfDoneTasks, setNoOfDoneTasks] = useState(0);
@@ -47,11 +47,11 @@ export default function Home() {
   setNoOfToDoTasks(todo)
   },[allTasks])
   //handling deleting of task.
-  const handleDelete: React.MouseEventHandler<HTMLSpanElement> = (event) => {
+  const handleDelete: React.MouseEventHandler<HTMLSpanElement> = () => {
     handleAsyncDelete();
   }
   const handleAsyncDelete = async () => {
-    const res = await deleteTask(taskId.current);
+     await deleteTask(taskId.current);
   }
 //handling the date formate.
   const handleDateFormate = (date:Date) => {
@@ -138,7 +138,6 @@ export default function Home() {
             <EditTaskForm taskId={taskId.current} setIsEditingTask={setIsEditingTask}/>
           </div>
         </div>
-
       }
     </div>
   );

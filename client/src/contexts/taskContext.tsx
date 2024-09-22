@@ -12,10 +12,10 @@ interface Task {
   dueDate: Date;
 }
 interface TaskPropsType {
-  title?: String,
-  description?: String,
-  status?: String,
-  priority?: String,
+  title?: string,
+  description?: string,
+  status?: string,
+  priority?: string,
   dueDate?: Date
 }
 
@@ -80,7 +80,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
   const updateTask = async (id: string, { title, description, status, priority, dueDate }: TaskPropsType) => {
     console.log("update task")
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/updateTask/${id}`, {
+       await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/updateTask/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +100,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
   // Placeholder for deleteTask
   const deleteTask = async (id: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/deleteTask/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/deleteTask/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

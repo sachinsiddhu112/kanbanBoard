@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 
 import { z } from 'zod'
 import { Input } from './ui/input'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from './ui/form'
 import {
     Select,
     SelectContent,
@@ -16,7 +16,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useRouter } from 'next/navigation';
+
 
 import { DatePicker } from './DatePicker'
 import { useTasks } from '@/contexts/taskContext'
@@ -29,7 +29,7 @@ export const formSchema = z.object({
 })
 
 export default function CreateTaskForm() {
-    const router = useRouter();
+    
     const [date, setDate] = React.useState<Date | null>(null)
     const { createTask } = useTasks();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -46,7 +46,7 @@ export default function CreateTaskForm() {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const data = { ...values, date };
         try {
-            const response = await createTask(data);
+            await createTask(data);
         }
         catch (err) {
             alert(err);
@@ -129,10 +129,10 @@ interface InputFormFieldProps {
     placeholder: string,
     description?: string,
     inputType?: string,
-    formControl: Control<z.infer<typeof formSchema>, any>
+    formControl: Control<z.infer<typeof formSchema>>
 }
 const InputFormField: React.FC<InputFormFieldProps> = ({
-    name, label, placeholder, description, inputType, formControl
+    name,  placeholder, description, inputType, formControl
 }) => {
     return (
         <FormField

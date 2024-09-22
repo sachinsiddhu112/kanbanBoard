@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 
 import { z } from 'zod'
 import { Input } from './ui/input'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from './ui/form'
 import {
     Select,
     SelectContent,
@@ -16,7 +16,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useRouter } from 'next/navigation';
+
 
 import { DatePicker } from './DatePicker'
 import { useTasks } from '@/contexts/taskContext'
@@ -33,7 +33,7 @@ interface EditTaskFormProps {
   }
 
 export default function EditTaskForm({taskId ,setIsEditingTask}:EditTaskFormProps) {
-    const router = useRouter();
+    
     const [date, setDate] = React.useState<Date | null>(null)
     const {updateTask} = useTasks();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -50,7 +50,7 @@ export default function EditTaskForm({taskId ,setIsEditingTask}:EditTaskFormProp
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const data = { ...values, date };
         try{   
-        const response = await updateTask(taskId,data);
+         await updateTask(taskId,data);
         setIsEditingTask(false);
     }
         catch(err){
@@ -138,10 +138,10 @@ interface InputFormFieldProps {
     placeholder: string,
     description?: string,
     inputType?: string,
-    formControl: Control<z.infer<typeof formSchema>, any>
+    formControl: Control<z.infer<typeof formSchema>>
 }
 const InputFormField: React.FC<InputFormFieldProps> = ({
-    name, label, placeholder, description, inputType, formControl
+    name, placeholder, description, inputType, formControl
 }) => {
     return (
         <FormField

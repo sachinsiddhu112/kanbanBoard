@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useEffect } from 'react'
+import React from 'react'
 import {  useForm,FieldPath,Control } from 'react-hook-form'
 import { z } from 'zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
@@ -78,10 +78,10 @@ interface InputFormFieldProps {
     placeholder: string,
     description?: string,
     inputType?: string,
-    formControl: Control<z.infer<typeof formSchema>, any>
+    formControl: Control<z.infer<typeof formSchema>>
 }
 const InputFormField: React.FC<InputFormFieldProps> = ({
-    name, label, placeholder, description, inputType, formControl
+    name, label, description, inputType, formControl
 }) => {
     return (
         <FormField

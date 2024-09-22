@@ -96,10 +96,10 @@ interface InputFormFieldProps {
     placeholder: string,
     description?: string,
     inputType?: string,
-    formControl: Control<z.infer<typeof formSchema>, any>
+    formControl: Control<z.infer<typeof formSchema>>
 }
 const InputFormField: React.FC<InputFormFieldProps> = ({
-    name, label, placeholder, description, inputType, formControl
+    name, label, description, inputType, formControl
 }) => {
     return (
         <FormField

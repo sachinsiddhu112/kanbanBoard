@@ -1,7 +1,7 @@
 'use client'
 
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 
 import { useTasks } from '@/contexts/taskContext';

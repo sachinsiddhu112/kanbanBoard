@@ -143,7 +143,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
     else {
       router.push("/login")
     }
-  }, [updateTask,deleteTask,createTask])
+  }, [updateTask,deleteTask,createTask,router])
 
   // Return the provider with the proper value prop and children
   return (

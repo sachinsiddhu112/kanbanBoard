@@ -11,15 +11,7 @@ import EditTaskForm from '@/components/EditTaskForm';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  interface Task {
-    title: string;
-    description: string;
-    status: string;
-    priority: string;
-    _id: string;
-    dueDate: Date;
-  }
-  
+ 
   const [noOfToDoTasks, setNoOfToDoTasks] = useState(0);
   const [noOfInProgTasks, setNoOfInProgTasks] = useState(0);
   const [noOfDoneTasks, setNoOfDoneTasks] = useState(0);

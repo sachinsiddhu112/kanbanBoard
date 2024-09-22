@@ -44,7 +44,7 @@ export default function EditTask() {
                 inProgCopy.splice(destination.index, 0, todoCopy[source.index])
                 setInProgTasks(inProgCopy)
             } else {
-                let inComCopy = JSON.parse(JSON.stringify(comTasks))
+                const inComCopy = JSON.parse(JSON.stringify(comTasks))
                 todoCopy[source.index].status = "Completed";
                 inComCopy.splice(destination.index, 0, todoCopy[source.index])
                 setComTasks(inComCopy)

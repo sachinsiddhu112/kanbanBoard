@@ -24,11 +24,11 @@ export default function LoginForm() {
             password: "",
         },
     })
-   
+    console.log("login host:",process.env.NEXT_PUBLIC_HOST)
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        const host = process.env.NEXT_PUBLIC_HOST;
+        
         try{
-            const response = await fetch(`http://localhost:8001/auth/login`,{
+            const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/auth/login`,{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'

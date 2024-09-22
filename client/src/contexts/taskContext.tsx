@@ -50,13 +50,13 @@ interface TasksContextProviderProps {
 // The context provider component
 export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ children }) => {
   const [allTasks, setAllTasks] = useState<Task[]>([] );  // Typing for tasks array
-  const host = "http://localhost:8001/tasks";
+  
   const router = useRouter();
   
   // Fetch all tasks from the server
   const fetchAllTasks = async () => {
     try {
-      const response = await fetch(`${host}/getAllTasks`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/getAllTasks`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
   const updateTask = async (id: string, { title, description, status, priority, dueDate }: TaskPropsType) => {
     console.log("update task")
     try {
-      const response = await fetch(`http://localhost:8001/tasks/updateTask/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/updateTask/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +100,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
   // Placeholder for deleteTask
   const deleteTask = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:8001/tasks/deleteTask/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/deleteTask/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
   };
   const createTask = async ({ title, description, status, priority, dueDate }: TaskPropsType) => {
     try {
-      const response = await fetch(`http://localhost:8001/tasks/createTask`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/createTask`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

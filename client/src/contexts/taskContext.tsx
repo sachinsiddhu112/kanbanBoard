@@ -11,6 +11,7 @@ interface Task {
   _id: string;
   dueDate: Date;
 }
+
 interface TaskPropsType {
   title?: string,
   description?: string,
@@ -22,9 +23,11 @@ interface TaskPropsType {
 // Interface for the context
 interface TasksContextType {
   allTasks: Task[];  // Array of tasks
+  setAllTasks: (tasks: Task[]) => void;
   fetchAllTasks: () => Promise<Task[]>;
   updateTask: (id: string, { title, description, status, priority, dueDate }:
     TaskPropsType) => void;
+  updateMultipleTasksStatus:(tasks:Task[]) => void;
   deleteTask: (id: string) => void;
   createTask: ({ title, description, status, priority, dueDate }:
     TaskPropsType) => void
@@ -78,7 +81,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
   // Placeholder for updateTask
 
   const updateTask = async (id: string, { title, description, status, priority, dueDate }: TaskPropsType) => {
-    console.log("update task")
+    
     try {
        await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/updateTask/${id}`, {
         method: "PUT",
@@ -96,6 +99,23 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
       
     }
   };
+  const updateMultipleTasksStatus = async (tasks:Task[]) => {
+    try{
+       await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/updateMultipleTasks`,{
+        method:'PUT',
+        headers:{
+          'Content-Type':'application/json',
+          'auth-token':sessionStorage.getItem('auth-token') || ''
+        },
+        body:JSON.stringify(tasks)
+      })
+     
+      router.push("/");
+  }
+  catch(err){
+    alert(err);
+  }
+  }
 
   // Placeholder for deleteTask
   const deleteTask = async (id: string) => {
@@ -117,7 +137,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
   };
   const createTask = async ({ title, description, status, priority, dueDate }: TaskPropsType) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/createTask`, {
+       await fetch(`${process.env.NEXT_PUBLIC_HOST}/tasks/createTask`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,10 +145,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
         },
         body: JSON.stringify({ title, description, status, priority, dueDate })
       })
-      
-      if(response){
         router.push("/")
-      }
     }
     catch (err) {
       console.log(err)
@@ -143,11 +160,11 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
     else {
       router.push("/login")
     }
-  }, [updateTask,deleteTask,createTask,router])
+  }, [updateTask,deleteTask,createTask,updateMultipleTasksStatus,router])
 
   // Return the provider with the proper value prop and children
   return (
-    <TasksContext.Provider value={{ allTasks, fetchAllTasks, updateTask, createTask, deleteTask }}>
+    <TasksContext.Provider value={{ allTasks,setAllTasks, fetchAllTasks, updateTask,updateMultipleTasksStatus, createTask, deleteTask }}>
       {children}
     </TasksContext.Provider>
   );

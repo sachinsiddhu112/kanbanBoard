@@ -20,6 +20,7 @@ import {
 
 import { DatePicker } from './DatePicker'
 import { useTasks } from '@/contexts/taskContext'
+import { useRouter } from 'next/navigation'
 export const formSchema = z.object({
     title: z.string().max(60),
     description: z.string().min(10).max(100),
@@ -29,7 +30,7 @@ export const formSchema = z.object({
 })
 
 export default function CreateTaskForm() {
-    
+    const router = useRouter();
     const [date, setDate] = React.useState<Date | null>(null)
     const { createTask } = useTasks();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -115,8 +116,9 @@ export default function CreateTaskForm() {
                     )}
                 />
                 <DatePicker selectedDate={date} setDate={setDate} />
-                <div className='w-[250px] h-11 '>
-                <Button type='submit'>Save</Button>
+                <div className=' flex gap-5 '>
+                <Button variant='outline' onClick={() => router.back()}>Back</Button>
+                <Button type='submit' variant='outline'>Save</Button>
                 </div>
             </form>
         </Form>

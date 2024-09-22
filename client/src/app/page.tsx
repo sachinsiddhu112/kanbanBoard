@@ -58,12 +58,13 @@ export default function Home() {
   
   return (
     <div className='w-full h-screen'>
-
-      {!isEditingTask ? <div className="flex flex-col gap-10 w-full h-screen">
+     
+      {!isEditingTask ?
+       <div className="flex flex-col items-center gap-10 w-full h-screen">
         <nav className='w-full h-fit p-5'>
           <span className='hover:bg-slate-900 cursor-pointer p-3 m-7 rounded-md'>Task Manager</span>
         </nav>
-        <section className='flex flex-col md:flex-row w-[90%] h-fit bg-[#232536] p-2 m-auto 
+        <section className='flex flex-col justify-center md:flex-row w-[90%] h-fit bg-[#232536] p-2 
       justify-between  items-center gap-5 rounded-md '>
           <div className='flex flex-wrap md:flex-col gap-2 w-fit h-fit p-5 m-3 bg-gray-900 rounded-md'>
             <span>{`All Tasks : ${allTasks?.length}`}</span>
@@ -80,8 +81,11 @@ export default function Home() {
             </Button>
           </div>
         </section>
-        <section className='flex flex-wrap justify-center lg:justify-start m-auto gap-5 p-5'>
-          {
+        <section className='flex flex-wrap justify-center lg:justify-start  gap-5 p-5'>
+          <div className='flex justify-end w-full h-fit'>
+
+          </div>
+          { allTasks.length > 0 ?
             allTasks?.map((task, ind) => (
               <div className='' key={ind}>
                 <Card>
@@ -119,6 +123,8 @@ export default function Home() {
                 </Card>
               </div>
             ))
+            :
+            <h2 className='text-amber-700 m-auto text-[35px]'>CREATE AND MANAGE YOUR TASKS.</h2>
           }
         </section>
 
@@ -131,6 +137,8 @@ export default function Home() {
           </div>
         </div>
       }
+    
+    
     </div>
   );
 }

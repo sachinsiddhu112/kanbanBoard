@@ -3,8 +3,6 @@ import User from "../models/userModel.js";
 
 
 export const getAllUserTasks = async (req, res) => {
-
-
     try {
         const tasks = await Tasks.find({ user: req.user.id });
         res.status(200).json(tasks);
@@ -17,7 +15,6 @@ export const getAllUserTasks = async (req, res) => {
 
 export const getUserTaskWithId = async (req, res) => {
     const { id } = req.params;
-
     try {
         const task = await Tasks.findById(id);
         if (!task) {
@@ -54,7 +51,6 @@ export const createTask = async (req, res) => {
         console.log(err);
         res.status(500).json({ error: "Server Side Error." });
     }
-
 }
 
 export const updateTask = async (req, res) => {
@@ -79,9 +75,7 @@ export const updateTask = async (req, res) => {
             priority:req.body.priority || task.priority
         }
         const savedTask = await Tasks.findByIdAndUpdate(id, { $set: newTask }, { new: true });
-        
         res.status(200).json(savedTask);
-
     }
     catch (error) {
         console.log(error)
@@ -89,6 +83,30 @@ export const updateTask = async (req, res) => {
     }
 }
 
+export const updateMultipleTasks = async (req,res) => {
+    try {
+        const tasksFromFrontend = req.body; 
+        // Iterate over the array and update the status for each task
+        const updatePromises = tasksFromFrontend.map(async (task) => {
+          // Fetch the task from the database
+          const taskFromDb = await Tasks.findById(task._id);
+          if (taskFromDb) {
+            // Update the status
+            taskFromDb.status = task.status;
+            // Save the updated task back to the database
+            await taskFromDb.save();
+          }
+        });
+        // Wait for all updates to complete
+        const st = await Promise.all(updatePromises);
+        console.log(st);
+        // Send a success response
+        res.status(200).json({ message: 'Tasks updated successfully!' });
+      } catch (error) {
+        console.error('Error updating tasks:', error);
+        res.status(500).json({ error: 'Error updating tasks'});
+      }
+}
 export const deleteTask = async (req, res) => {
     const {id} = req.params;
     try{

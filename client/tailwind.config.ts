@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-
+import { PluginAPI } from 'tailwindcss/types/config'; 
 const config: Config = {
     darkMode: ["class"],
     content: [
@@ -58,6 +58,18 @@ const config: Config = {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [function (api: PluginAPI) {
+	const { addUtilities } = api;  // Use PluginAPI type for `api`
+	
+	addUtilities({
+	  '.no-scrollbar': {
+		'-ms-overflow-style': 'none', /* IE and Edge */
+		'scrollbar-width': 'none',    /* Firefox */
+	  },
+	  '.no-scrollbar::-webkit-scrollbar': {
+		display: 'none',              /* Chrome, Safari, and Opera */
+	  },
+	});
+  },require("tailwindcss-animate")],
 };
 export default config;

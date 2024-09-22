@@ -17,7 +17,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-
+import { useRouter } from 'next/navigation'
 import { DatePicker } from './DatePicker'
 import { useTasks } from '@/contexts/taskContext'
 export const formSchema = z.object({
@@ -46,7 +46,7 @@ export default function EditTaskForm({taskId ,setIsEditingTask}:EditTaskFormProp
 
         },
     })
-
+   
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const data = { ...values, date };
         try{   
@@ -123,8 +123,9 @@ export default function EditTaskForm({taskId ,setIsEditingTask}:EditTaskFormProp
                 />
                 <DatePicker selectedDate={date} setDate={setDate} />
 
-                <div className='w-[250px] h-11 '>
-                <Button type='submit'>Save</Button>
+                <div className=' flex gap-5 '>
+                <Button variant='outline' onClick={() => setIsEditingTask(false)}>Back</Button>
+                <Button type='submit' variant='outline'>Save</Button>
                 </div>
 
             </form>

@@ -21,8 +21,8 @@ import {
 import { DatePicker } from './DatePicker'
 import { useTasks } from '@/contexts/taskContext'
 export const formSchema = z.object({
-    title: z.string(),
-    description: z.string(),
+    title: z.string().max(60),
+    description: z.string().max(100),
     status: z.string(),
     priority: z.string(),
 

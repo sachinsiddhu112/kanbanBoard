@@ -11,8 +11,8 @@ import { useRouter } from 'next/navigation';
 
 
  const formSchema = z.object({
-    username: z.string().max(20),
-    password: z.string().min(5),
+    username: z.string().min(5).max(20),
+    password: z.string().min(5).max(30),
 })
 
 export default function LoginForm() {

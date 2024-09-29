@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, useState, ReactNode, useContext, useEffect } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter ,usePathname} from 'next/navigation'
 // Interface for a single Task
 interface Task {
   title: string;
@@ -53,7 +53,7 @@ interface TasksContextProviderProps {
 // The context provider component
 export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ children }) => {
   const [allTasks, setAllTasks] = useState<Task[]>([] );  // Typing for tasks array
-  
+  const currentPath = usePathname(); 
   const router = useRouter();
   
   // Fetch all tasks from the server
@@ -154,11 +154,11 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
     }
   };
   useEffect(() => {
-    if (sessionStorage.getItem('auth-token')) {
-      fetchAllTasks()
-    }
-    else {
-      router.push("/login")
+   
+    if (!sessionStorage.getItem('auth-token') && currentPath !== '/login' && currentPath !== '/signup') {
+      router.push("/login");
+    } else if (sessionStorage.getItem('auth-token')) {
+      fetchAllTasks();
     }
   }, [updateTask,deleteTask,createTask,updateMultipleTasksStatus,router])
 

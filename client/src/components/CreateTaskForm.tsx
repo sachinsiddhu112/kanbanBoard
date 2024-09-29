@@ -22,7 +22,7 @@ import { DatePicker } from './DatePicker'
 import { useTasks } from '@/contexts/taskContext'
 import { useRouter } from 'next/navigation'
 export const formSchema = z.object({
-    title: z.string().max(60),
+    title: z.string().min(5).max(60),
     description: z.string().min(10).max(100),
     status: z.string().min(1),
     priority: z.string(),

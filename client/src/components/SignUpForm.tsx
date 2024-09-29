@@ -10,7 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useRouter } from 'next/navigation';
 export const formSchema = z.object({
     email: z.string().email(),
-    username: z.string().max(20),
+    username: z.string().min(5).max(20),
     password: z.string().min(5),
     confirmPassword: z.string().min(5)
 })

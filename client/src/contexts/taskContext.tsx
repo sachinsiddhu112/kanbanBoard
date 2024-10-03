@@ -53,9 +53,10 @@ interface TasksContextProviderProps {
 
 // The context provider component
 export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ children }) => {
-  const storedTasks = sessionStorage.getItem('allTasks') 
   let parsedTasks: Task[] = [];
- 
+  
+  if(typeof window !== "undefined"){
+  const storedTasks = sessionStorage.getItem('allTasks') 
   if (storedTasks) {
     try {
       parsedTasks = JSON.parse(storedTasks);
@@ -68,6 +69,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
       console.log('error in parsing') // In case JSON parsing fails
     }
   }
+}
  
   const [allTasks, setAllTasks] = useState<Task[]>(parsedTasks);  // Typing for tasks array
   const currentPath = usePathname(); 

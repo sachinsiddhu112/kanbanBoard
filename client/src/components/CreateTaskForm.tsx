@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { useForm, FieldPath, Control, Controller } from 'react-hook-form'
 
 import { Button } from "@/components/ui/button"
@@ -24,14 +24,13 @@ import { useRouter } from 'next/navigation'
 export const formSchema = z.object({
     title: z.string().min(5).max(60),
     description: z.string().min(10).max(100),
-    status: z.string().min(1),
-    priority: z.string(),
-
+    status: z.string().min(5),
+    priority: z.string()
 })
 
 export default function CreateTaskForm() {
     const router = useRouter();
-    const [date, setDate] = React.useState<Date | null>(null)
+    const [dueDate, setDueDate] = React.useState<Date | null>(null)
     const { createTask } = useTasks();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -45,13 +44,15 @@ export default function CreateTaskForm() {
     })
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        const data = { ...values, date };
+        const data = { ...values, dueDate };
         try {
+
             await createTask(data);
         }
         catch (err) {
             alert(err);
         }
+
     }
     return (
         <Form {...form} >
@@ -75,7 +76,8 @@ export default function CreateTaskForm() {
                 <Controller
                     name="status"
                     control={form.control}
-                    render={({ field }) => (
+                    rules={{ required: "Status is required" }}
+                    render={({ field, fieldState: { error } }) => (
                         <FormItem>
                             <FormControl>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -89,7 +91,7 @@ export default function CreateTaskForm() {
                                     </SelectContent>
                                 </Select>
                             </FormControl>
-                            <FormMessage />
+                            {error && <FormMessage>Status is required</FormMessage>}
                         </FormItem>
                     )}
                 />
@@ -98,7 +100,6 @@ export default function CreateTaskForm() {
                     control={form.control}
                     render={({ field }) => (
                         <FormItem>
-
                             <FormControl>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <SelectTrigger>
@@ -111,14 +112,13 @@ export default function CreateTaskForm() {
                                     </SelectContent>
                                 </Select>
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
-                <DatePicker selectedDate={date} setDate={setDate} />
+                <DatePicker dueDate={dueDate} setDueDate={setDueDate} />
                 <div className=' flex gap-5 '>
-                <Button variant='outline' onClick={() => router.back()}>Back</Button>
-                <Button type='submit' variant='outline'>Save</Button>
+                    <Button variant='outline' onClick={() => router.back()}>Back</Button>
+                    <Button type='submit' variant='outline'>Save</Button>
                 </div>
             </form>
         </Form>
@@ -134,7 +134,7 @@ interface InputFormFieldProps {
     formControl: Control<z.infer<typeof formSchema>>
 }
 const InputFormField: React.FC<InputFormFieldProps> = ({
-    name,  placeholder, description, inputType, formControl
+    name, placeholder, description, inputType, formControl
 }) => {
     return (
         <FormField

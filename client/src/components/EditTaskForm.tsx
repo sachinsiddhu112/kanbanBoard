@@ -30,6 +30,7 @@ export const formSchema = z.object({
 interface EditTaskFormProps {
     taskId: string;
     setIsEditingTask: Dispatch<SetStateAction<boolean>>;
+   
   }
 
 export default function EditTaskForm({taskId ,setIsEditingTask}:EditTaskFormProps) {
@@ -49,6 +50,7 @@ export default function EditTaskForm({taskId ,setIsEditingTask}:EditTaskFormProp
    
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const data = { ...values, date };
+       
         try{   
          await updateTask(taskId,data);
         setIsEditingTask(false);
@@ -56,6 +58,7 @@ export default function EditTaskForm({taskId ,setIsEditingTask}:EditTaskFormProp
         catch(err){
             alert(err);
         }
+        
     }
     return (
         <Form {...form} >
@@ -121,7 +124,7 @@ export default function EditTaskForm({taskId ,setIsEditingTask}:EditTaskFormProp
                         </FormItem>
                     )}
                 />
-                <DatePicker selectedDate={date} setDate={setDate} />
+                <DatePicker dueDate={date} setDueDate={setDate} />
 
                 <div className=' flex gap-5 '>
                 <Button variant='outline' onClick={() => setIsEditingTask(false)}>Back</Button>

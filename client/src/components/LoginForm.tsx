@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import React,{Dispatch, SetStateAction} from 'react'
 import {  useForm,FieldPath,Control } from 'react-hook-form'
 import { z } from 'zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
@@ -24,9 +24,9 @@ export default function LoginForm() {
             password: "",
         },
     })
-    console.log("login host:",process.env.NEXT_PUBLIC_HOST)
+    
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        
+       
         try{
             const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/auth/login`,{
                 method:'POST',
@@ -45,8 +45,10 @@ export default function LoginForm() {
             }
         }
         catch(err){
+            
             alert(err);
         }
+        
     }
     return (
         <Form {...form}>

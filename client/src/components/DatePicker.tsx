@@ -15,11 +15,11 @@ import {
 
 
 interface DatePickerProps {
-  selectedDate: Date | null; // Ensuring this is Date | null
-  setDate: (date: Date | null) => void; // Passing setDate as a prop
+  dueDate: Date | null; // Ensuring this is Date | null
+  setDueDate: (date: Date | null) => void; // Passing setDate as a prop
 }
 
-export const  DatePicker:React.FC<DatePickerProps>=({selectedDate,setDate}) => {
+export const  DatePicker:React.FC<DatePickerProps>=({dueDate,setDueDate}) => {
   //const [date, setDate] = React.useState<Date>()
 return (
   <Popover>
@@ -28,19 +28,19 @@ return (
         variant={"outline"}
         className={cn(
           "w-[280px] justify-start text-left font-normal",
-          !selectedDate && "text-muted-foreground"
+          !dueDate && "text-muted-foreground"
         )}
       >
         <CalendarIcon className="mr-2 h-4 w-4" />
-        {selectedDate? format(selectedDate, "PPP") : <span>Pick a date</span>}
+        {dueDate? format(dueDate, "PPP") : <span>Pick a date</span>}
       </Button>
     </PopoverTrigger>
     <PopoverContent className="w-auto p-0">
       <Calendar
         mode="single"
-        selected={selectedDate ?? undefined} // Pass date directly, or undefined if null
+        selected={dueDate ?? undefined} // Pass date directly, or undefined if null
         onSelect={(newDate) => {
-          setDate(newDate || null); // Set newDate or null
+          setDueDate(newDate || null); // Set newDate or null
         }}
         initialFocus
       />

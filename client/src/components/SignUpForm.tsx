@@ -1,19 +1,22 @@
 "use client"
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import React, {Dispatch, SetStateAction} from 'react'
 import {  useForm,FieldPath, Control } from 'react-hook-form'
 import { z } from 'zod'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
 import { useRouter } from 'next/navigation';
+
+
 export const formSchema = z.object({
     email: z.string().email(),
     username: z.string().min(5).max(20),
     password: z.string().min(5),
     confirmPassword: z.string().min(5)
 })
+
 export default function SignUpForm() {
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -27,7 +30,7 @@ export default function SignUpForm() {
     })
    
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        
+       
         const host = process.env.NEXT_PUBLIC_HOST;
         try{
             const response = await fetch(`${host}/auth/signup`,{
@@ -41,6 +44,7 @@ export default function SignUpForm() {
             if(response.status == 200){
                 sessionStorage.setItem('user',data.user);
                 sessionStorage.setItem('auth-token',data.authToken);
+               
                 router.push('/');
             }else{
                 alert(data.error);
@@ -49,6 +53,7 @@ export default function SignUpForm() {
         catch(err){
             alert(err);
         }
+        
     }
     return (
         <Form {...form}>

@@ -57,7 +57,8 @@ export default function Home() {
       await deleteTask(taskId.current);
       //setTaskId('')
     }
-    catch (err) {
+    catch {
+      
       alert("Error in deleting the post.");
     }
     

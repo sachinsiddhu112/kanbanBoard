@@ -2,11 +2,10 @@
 
 import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
-import React, { useState } from 'react'
-import { CirclesWithBar } from 'react-loader-spinner'
-import { useTasks } from '@/contexts/taskContext';
+import React from 'react'
+
 export default function Login() {
- const {loading} = useTasks();
+
   return (
     <main className="sm:w-[350px] md:w-[800px] lg:w-full h-screen flex flex-col justify-center items-center p-5 m-auto">
      

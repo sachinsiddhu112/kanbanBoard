@@ -2,7 +2,7 @@
 
 import SignUpForm from "@/components/SignUpForm";
 import Link from "next/link";
-import React, { useState } from 'react'
+import React from 'react'
 import { CirclesWithBar } from "react-loader-spinner";
 import { useTasks } from '@/contexts/taskContext';
 export default function SignUp() {

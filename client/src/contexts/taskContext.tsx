@@ -63,7 +63,7 @@ export const TasksContextProvider: React.FC<TasksContextProviderProps> = ({ chil
         parsedTasks = [];  // Ensure it's an array
         console.log('not array')
       }
-    } catch (error) {
+    } catch {
       parsedTasks = []; 
       console.log('error in parsing') // In case JSON parsing fails
     }
